@@ -3,7 +3,7 @@ package com.mycompany.jusadipay;
 import java.time.LocalDateTime;
 
 public class withdrawalcode {
-    private String codigo;
+    private int codigo;
     private LocalDateTime fechageneracion;
     private LocalDateTime fechaexpiracion;
     private String estado;
