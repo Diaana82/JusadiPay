@@ -13,7 +13,7 @@ public class withdrawalcode {
     public withdrawalcode() {
     }
 
-    public withdrawalcode(String codigo, LocalDateTime fechageneracion, LocalDateTime fechaexpiracion, String estado, User cuentaAsociante, String puntoretiro) {
+    public withdrawalcode(int codigo, LocalDateTime fechageneracion, LocalDateTime fechaexpiracion, String estado, User cuentaAsociante, String puntoretiro) {
         this.codigo = codigo;
         this.fechageneracion = fechageneracion;
         this.fechaexpiracion = fechaexpiracion;
@@ -22,11 +22,11 @@ public class withdrawalcode {
         this.puntoretiro = puntoretiro;
     }
 
-    public String getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 
@@ -71,7 +71,4 @@ public class withdrawalcode {
     }
     
     
-    
 }
-
-
