@@ -1,0 +1,42 @@
+
+package com.mycompany.jusadipay;
+import java.time.LocalDateTime;
+public class UserAccess {
+    private String Usuario;
+    private String ip;
+    private LocalDateTime fechahora;
+    private String dispositivo;
+
+    public String getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(String Usuario) {
+        this.Usuario = Usuario;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public LocalDateTime getFechahora() {
+        return fechahora;
+    }
+
+    public void setFechahora(LocalDateTime fechahora) {
+        this.fechahora = fechahora;
+    }
+
+    public String getDispositivo() {
+        return dispositivo;
+    }
+
+    public void setDispositivo(String dispositivo) {
+        this.dispositivo = dispositivo;
+    }
+    
+}
