@@ -1,5 +1,8 @@
 package com.mycompany.jusadipay;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Services {
     private supplier proveedor;
@@ -10,6 +13,7 @@ public class Services {
     private String estado;
     private Account cuentaOrigen;
     private Transaction transaccion;
+    private static final List<supplier> PROVEEDORES = new ArrayList<>();
 
     public Services() {
     }
@@ -91,5 +95,87 @@ public class Services {
         this.transaccion = transaccion;
     }
     
+    public static List<supplier> obtenerProveedor() {
+    return Collections.unmodifiableList(PROVEEDORES);
+    }
+    
+    public boolean recargarCel(String numero, double monto) {
+    if (cuentaOrigen == null) return false;
+    if (numero == null || numero.isBlank()) return false;
+    if (monto <= 0) return false;
+    if (cuentaOrigen.getSaldo() < monto) return false;
+
+    // Debitar
+    cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - monto);
+
+    // Setear campos del servicio
+    this.proveedor = null; // opcional, si tienes un proveedor de recargas, asígnalo
+    this.monto = monto;
+    this.numReferencia = numero;
+    this.tipoServicio = "RECARGA_CELULAR";
+    this.fechaPago = LocalDateTime.now();
+    this.estado = "COMPLETADA";
+
+    // Registrar transacción específica del servicio
+    this.transaccion = new Transaction(
+        "TX-" + System.nanoTime(),
+        this.fechaPago,
+        monto,
+        this.tipoServicio,
+        this.estado,
+        this.cuentaOrigen,
+        null,
+        null
+    );
+    return true;
+}
+    
+    public boolean pagarFactura(supplier prov, String referencias, double monto) {
+    if (cuentaOrigen == null) return false;
+    if (prov == null) return false;
+    if (referencias == null || referencias.isBlank()) return false;
+    if (monto <= 0) return false;
+    if (cuentaOrigen.getSaldo() < monto) return false;
+
+    // Debitar
+    cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - monto);
+
+    // Setear campos del servicio
+    this.proveedor = prov;
+    this.monto = monto;
+    this.numReferencia = referencias;
+    this.tipoServicio = "PAGO_FACTURA";
+    this.fechaPago = LocalDateTime.now();
+    this.estado = "COMPLETADA";
+
+    // Registrar transacción del servicio
+    this.transaccion = new Transaction(
+        "TX-" + System.nanoTime(),
+        this.fechaPago,
+        monto,
+        this.tipoServicio,
+        this.estado,
+        this.cuentaOrigen,
+        null,
+        null
+    );
+    return true;
+}
+    
+    // Comprobante simple con datos del servicio
+public String generarComprobante() {
+    String provNombre = (proveedor != null) ? proveedor.getNombreProveedor() : "N/A";
+    return new StringBuilder()
+        .append("=== COMPROBANTE SERVICIO ===\n")
+        .append("Proveedor: ").append(provNombre).append('\n')
+        .append("Tipo: ").append(tipoServicio).append('\n')
+        .append("Referencia: ").append(numReferencia).append('\n')
+        .append("Monto: ").append(monto).append('\n')
+        .append("Fecha: ").append(fechaPago).append('\n')
+        .append("Estado: ").append(estado).append('\n')
+        .append("Cuenta Origen: ").append(cuentaOrigen != null ? cuentaOrigen.getNumCuenta() : "N/A").append('\n')
+        .append("Transacción: ").append(transaccion != null ? transaccion.getIdTransaccion() : "N/A")
+        .toString();
+}
     
 }
