@@ -9,7 +9,7 @@ public class Notification {
     private LocalDateTime fechaEnvio;
     private LocalDateTime horaEnvio;
     private Transaction transaccionAsociada;
-    private withdraealcode codigoRetiroAsociado;
+    private withdrawalcode codigoRetiroAsociado;
 
     public Notification() {
     }
