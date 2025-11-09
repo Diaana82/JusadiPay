@@ -17,6 +17,26 @@ public class JusadiPay {
         
         User diana =new User("Diana", "1002799922", "3135374647", "dianitha20","diana123", 21);
         
+        // accesos de usuario
+        
+        UserAccess accSara = new UserAccess("Sara", "127.0.0.1", LocalDateTime.now(), "Android");
+        accSara.registrarAccesos();
+
+        UserAccess accDiana = new UserAccess("Diana", "192.168.1.50", LocalDateTime.now(), "iOS");
+        accDiana.registrarAccesos();
+
+        // Mostrar todos los accesos
+        System.out.println("=== Accesos registrados ===");
+        for (UserAccess a : UserAccess.mostrarAccesos()) {
+            System.out.println(a.getUsuario() + " - " + a.getIp() + " - " + a.getFechahora() + " - " + a.getDispositivo());
+        }
+
+        // Filtrar por usuario
+        System.out.println("=== Accesos de Sara ===");
+        for (UserAccess a : UserAccess.FiltrarPorUsuario(sara)) {
+            System.out.println(a.getUsuario() + " - " + a.getIp() + " - " + a.getFechahora());
+        }
+        
         //crea cuenta
         Account cuenta1 = new Account("ACC-001", sara, 999000.00);
         Account cuenta2 = new Account("ACC-002", diana, 900000.00);
@@ -64,6 +84,19 @@ public class JusadiPay {
             }else{
                 System.out.println("El valor no esta disponible");
             }
+            withdrawalcode codigo = cuenta2.solicitarRetiroCodigo(300.0, "PUNTO-RET");
+            if (codigo != null) {
+                boolean usado = cuenta2.validarCodigoRetiro(String.valueOf(codigo.getCodigo()));
+                if (usado) {
+                    Transaction t6 = cuenta2.obtenerMovimientos()
+                                                 .get(cuenta2.obtenerMovimientos().size() - 1);
+                    System.out.println("Retiro con código: " + t6.getMonto());
+                } else {
+                    System.out.println("Código de retiro inválido/expirado");
+                }
+            } else {
+                System.out.println("No se pudo generar código de retiro");
+            }
             List<Transaction> movsSara = cuenta1.obtenerMovimientos();
                 for (Transaction tr : movsSara) {
                     System.out.println(tr.obtenerDetaller()); // o el método de detalle que tengas
@@ -75,6 +108,9 @@ public class JusadiPay {
         }
             System.out.println("Saldo final Sara: " + cuenta1.getSaldo());
             System.out.println("Saldo final Diana: " + cuenta2.getSaldo());
-    }  
+            
+    }
+    
+
                 
 }
