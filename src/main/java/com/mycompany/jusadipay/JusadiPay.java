@@ -1,9 +1,4 @@
 package com.mycompany.jusadipay;
-import com.mycompany.jusadipay.User;
-import com.mycompany.jusadipay.Account;
-import com.mycompany.jusadipay.Services;
-import com.mycompany.jusadipay.pocket;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
