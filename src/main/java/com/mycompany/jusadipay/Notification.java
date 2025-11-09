@@ -14,7 +14,7 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String idNotificacion, User usuarioDestino, String contenido, LocalDateTime fechaEnvio, LocalDateTime horaEnvio, Transaction transaccionAsociada, withdraealcode codigoRetiroAsociado) {
+    public Notification(String idNotificacion, User usuarioDestino, String contenido, LocalDateTime fechaEnvio, LocalDateTime horaEnvio, Transaction transaccionAsociada, withdrawalcode codigoRetiroAsociado) {
         this.idNotificacion = idNotificacion;
         this.usuarioDestino = usuarioDestino;
         this.contenido = contenido;
@@ -23,8 +23,9 @@ public class Notification {
         this.transaccionAsociada = transaccionAsociada;
         this.codigoRetiroAsociado = codigoRetiroAsociado;
     }
-    
 
+    
+ 
     public String getIdNotificacion() {
         return idNotificacion;
     }
