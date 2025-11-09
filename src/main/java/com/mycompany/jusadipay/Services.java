@@ -99,24 +99,24 @@ public class Services {
     return Collections.unmodifiableList(PROVEEDORES);
     }
     
+    
     public boolean recargarCel(String numero, double monto) {
     if (cuentaOrigen == null) return false;
     if (numero == null || numero.isBlank()) return false;
     if (monto <= 0) return false;
     if (cuentaOrigen.getSaldo() < monto) return false;
 
-    // Debitar
+  
     cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - monto);
 
-    // Setear campos del servicio
-    this.proveedor = null; // opcional, si tienes un proveedor de recargas, asígnalo
+
+    this.proveedor = null; 
     this.monto = monto;
     this.numReferencia = numero;
     this.tipoServicio = "RECARGA_CELULAR";
     this.fechaPago = LocalDateTime.now();
     this.estado = "COMPLETADA";
 
-    // Registrar transacción específica del servicio
     this.transaccion = new Transaction(
         "TX-" + System.nanoTime(),
         this.fechaPago,
@@ -137,10 +137,10 @@ public class Services {
     if (monto <= 0) return false;
     if (cuentaOrigen.getSaldo() < monto) return false;
 
-    // Debitar
+
     cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - monto);
 
-    // Setear campos del servicio
+
     this.proveedor = prov;
     this.monto = monto;
     this.numReferencia = referencias;
@@ -148,7 +148,6 @@ public class Services {
     this.fechaPago = LocalDateTime.now();
     this.estado = "COMPLETADA";
 
-    // Registrar transacción del servicio
     this.transaccion = new Transaction(
         "TX-" + System.nanoTime(),
         this.fechaPago,
@@ -162,7 +161,6 @@ public class Services {
     return true;
 }
     
-    // Comprobante simple con datos del servicio
 public String generarComprobante() {
     String provNombre = (proveedor != null) ? proveedor.getNombreProveedor() : "N/A";
     return new StringBuilder()
