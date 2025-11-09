@@ -32,5 +32,49 @@ public class JusadiPay {
         //Imprimir saldo actual
         System.out.println("Saldo inicial de Sara: "+cuenta1.getSaldo());
         System.out.println("Saldo inicial de Diana: "+cuenta2.getSaldo());
-    }
+        
+        //Crear transaccion
+        try{
+            boolean depositoOk = cuenta1.depositar(800000.00);
+            if (depositoOk){
+                Transaction transaccion1 = cuenta1.obtenerMovimientos().get(cuenta1.obtenerMovimientos().size() - 1);
+                System.out.println("Te depositaron: " + transaccion1.getMonto() + " a tu cuenta");
+            }else{
+                System.out.println("No se puede hacer el deposito");
+            }
+            
+            boolean retiroOk = cuenta2.retirar(200000.00);
+            if (retiroOk){
+                Transaction transaccion2 = cuenta2.obtenerMovimientos().get(cuenta2.obtenerMovimientos().size() - 1);
+                System.out.println("Retiraste: " + transaccion2.getMonto());
+            }else{
+                System.out.println("No puedes hacer tu retiro");
+            }
+            
+            double montoTransferir = 250000.00;
+            boolean retiroTransferir = cuenta2.retirar(montoTransferir);
+            if (retiroTransferir){
+                boolean depositarTransferir = cuenta1.depositar(montoTransferir);
+                if (depositarTransferir){
+                    System.out.println("Transferencia de: " + montoTransferir);
+                }else{
+                    cuenta1.depositar(montoTransferir);
+                    System.out.println("No se puedo realizar la transferencia.");
+                }
+            }else{
+                System.out.println("El valor no esta disponible");
+            }
+            List<Transaction> movsSara = cuenta1.obtenerMovimientos();
+                for (Transaction tr : movsSara) {
+                    System.out.println(tr.obtenerDetaller()); // o el método de detalle que tengas
+                }
+
+            } 
+        catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+        }
+            System.out.println("Saldo final Sara: " + cuenta1.getSaldo());
+            System.out.println("Saldo final Diana: " + cuenta2.getSaldo());
+    }  
+                
 }
