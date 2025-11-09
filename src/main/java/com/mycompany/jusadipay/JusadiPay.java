@@ -1,11 +1,13 @@
 package com.mycompany.jusadipay;
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Scanner;
 
 public class JusadiPay {
 
     public static void main(String[] args) {
-        System.out.println("==INICIALIZANDO BILLETERA VIRTUAL");
+        System.out.println("**INICIALIZANDO BILLETERA VIRTUAL**");
         
         //1. crear servicios
         Services servicio1 = new Services();
@@ -17,7 +19,16 @@ public class JusadiPay {
         
         User diana =new User("Diana", "1002799922", "3135374647", "dianitha20","diana123", 21);
         
-        // accesos de usuario
+        try {
+            sara.registrarse();
+            sara.iniciarSesion();
+            diana.registrarse();
+            diana.iniciarSesion();
+        } catch (Exception ex) {
+            System.out.println("Error registro/sesión: " + ex.getMessage());
+        }
+        
+        //3. accesos de usuario
         
         UserAccess accSara = new UserAccess("Sara", "127.0.0.1", LocalDateTime.now(), "Android");
         accSara.registrarAccesos();
@@ -37,22 +48,23 @@ public class JusadiPay {
             System.out.println(a.getUsuario() + " - " + a.getIp() + " - " + a.getFechahora());
         }
         
-        //crea cuenta
+        //4. crea cuenta
         Account cuenta1 = new Account("ACC-001", sara, 999000.00);
         Account cuenta2 = new Account("ACC-002", diana, 900000.00);
 
-        //Crear bolsillos
+        //5. Crear bolsillos
         pocket bolsillo1 = new pocket ("Universidad", 3000000.00, 0.0, 0.0, "activo", cuenta1,LocalDateTime.now());
         pocket bolsillo2 = new pocket ("Compras", 500000.00, 85000.00, 0.17, "activo", cuenta2,LocalDateTime.now());
         
-        //Crear proveedores
+        //6. Crear proveedores
         supplier provLuz = new supplier ("Chec", "Luz", LocalDateTime.now());
         supplier provMovil = new supplier ("Tigo", "Telefonia", LocalDateTime.now());
         
-        //Imprimir saldo actual
+        //7. Imprimir saldo actual
         System.out.println("Saldo inicial de Sara: "+cuenta1.getSaldo());
         System.out.println("Saldo inicial de Diana: "+cuenta2.getSaldo());
         
+        //operaciones basicas
         //Crear transaccion
         try{
             boolean depositoOk = cuenta1.depositar(800000.00);
@@ -78,12 +90,15 @@ public class JusadiPay {
                 if (depositarTransferir){
                     System.out.println("Transferencia de: " + montoTransferir);
                 }else{
-                    cuenta1.depositar(montoTransferir);
+                    cuenta2.depositar(montoTransferir);
                     System.out.println("No se puedo realizar la transferencia.");
                 }
             }else{
                 System.out.println("El valor no esta disponible");
             }
+            
+            //codigo de retiro 
+            
             withdrawalcode codigo = cuenta2.solicitarRetiroCodigo(300.0, "PUNTO-RET");
             if (codigo != null) {
                 boolean usado = cuenta2.validarCodigoRetiro(String.valueOf(codigo.getCodigo()));
@@ -97,11 +112,12 @@ public class JusadiPay {
             } else {
                 System.out.println("No se pudo generar código de retiro");
             }
+            
+            //movimientos
             List<Transaction> movsSara = cuenta1.obtenerMovimientos();
                 for (Transaction tr : movsSara) {
                     System.out.println(tr.obtenerDetaller()); // o el método de detalle que tengas
                 }
-
             } 
         catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
