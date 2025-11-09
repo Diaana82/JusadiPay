@@ -73,12 +73,11 @@ public class Notification {
         this.transaccionAsociada = transaccionAsociada;
     }
 
-    public withdraealcode getCodigoRetiroAsociado() {
+    public withdrawalcode getCodigoRetiroAsociado() {
         return codigoRetiroAsociado;
     }
 
-    public void setCodigoRetiroAsociado(withdraealcode codigoRetiroAsociado) {
+    public void setCodigoRetiroAsociado(withdrawalcode codigoRetiroAsociado) {
         this.codigoRetiroAsociado = codigoRetiroAsociado;
     }
-    
 }
