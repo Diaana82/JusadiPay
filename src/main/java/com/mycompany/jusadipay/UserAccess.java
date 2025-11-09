@@ -1,6 +1,10 @@
-
 package com.mycompany.jusadipay;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class UserAccess {
     private String Usuario;
     private String ip;
@@ -49,4 +53,27 @@ public class UserAccess {
         this.dispositivo = dispositivo;
     }
     
+    private static final List<UserAccess> ACCESOS = new ArrayList<>();
+    
+    public void registrarAccesos() {
+        if (this.fechahora == null) {
+            this.fechahora = LocalDateTime.now();
+        }
+        ACCESOS.add(new UserAccess(this.Usuario, this.ip, this.fechahora, this.dispositivo));
+    }
+    
+    public static List<UserAccess> mostrarAccesos() {
+    return Collections.unmodifiableList(ACCESOS);
+    }
+    
+    public static List<UserAccess> FiltrarPorUsuario(User usuario) {
+        if (usuario == null) return List.of();
+        List<UserAccess> out = new ArrayList<>();
+        for (UserAccess a : ACCESOS) {
+            if (a.getUsuario() != null && a.getUsuario().equalsIgnoreCase(usuario.getNombre())) {
+                out.add(a);
+            }
+        }
+        return out;
+    }
 }
