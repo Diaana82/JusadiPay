@@ -1,6 +1,8 @@
-
 package com.mycompany.jusadipay;
+
 import java.time.LocalDateTime;
+
+
 public class UserAccess {
     private String Usuario;
     private String ip;
