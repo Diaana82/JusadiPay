@@ -1,9 +1,5 @@
 package com.mycompany.jusadipay;
 
-/**
- *
- * @author patin
- */
 public class User {
     //atributos
     public String nombre;
@@ -73,6 +69,50 @@ public class User {
     public void setEdad(int edad) {
         this.edad = edad;
     }
+    // Getters de estado (útiles para el main/tests)
+    public boolean isRegistrado() {
+        return registrado;
+    }
+
+    public boolean isSesionActiva() {
+        return sesionActiva;
+    }
     
+    // Estados internos de registro y sesión
+    private boolean registrado = false;
+    private boolean sesionActiva = false;
+
+    //  verificar unicidad básica por correo en memoria
+    private static final java.util.Set<String> CORREOS_REGISTRADOS = new java.util.HashSet<>();
+
+    public void registrarse() {
+        // Validaciones mínimas
+        if (this.nombre == null || this.nombre.isBlank()) throw new IllegalStateException("Nombre requerido");
+        if (this.documento == null || this.documento.isBlank()) throw new IllegalStateException("Documento requerido");
+        if (this.correo == null || this.correo.isBlank()) throw new IllegalStateException("Correo requerido");
+        if (this.contraseña == null || this.contraseña.isBlank()) throw new IllegalStateException("Contraseña requerida");
+        if (this.edad < 18) throw new IllegalStateException("Debe ser mayor de edad");
+
+        // Unicidad de correo
+        if (CORREOS_REGISTRADOS.contains(this.correo)) {
+            throw new IllegalStateException("Correo ya registrado");
+        }
+        CORREOS_REGISTRADOS.add(this.correo);
+
+        this.registrado = true;
+    }
+
+    public boolean iniciarSesion() {
+        if (!registrado) return false;
+        if (sesionActiva) return true; // ya iniciada
+       
+        this.sesionActiva = true;
+        return true;
+    }
+
+    public void cerrarSesion() {
+        this.sesionActiva = false;
+    }
+
     
 }
