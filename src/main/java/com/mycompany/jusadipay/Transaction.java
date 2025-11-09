@@ -1,6 +1,7 @@
 package com.mycompany.jusadipay;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
     private String idTransaccion;
@@ -90,5 +91,43 @@ public class Transaction {
         this.idAcceso = idAcceso;
     }
     
+    public String obtenerDetaller() {
+        String id = idTransaccion != null ? idTransaccion : "N/A";
+        String f = (fecha != null)
+                ? fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                : "N/A";
+        String m = (monto != null) ? String.format("%,.2f", monto) : "0.00";
+        String tipo = (tipoTransaccion != null) ? tipoTransaccion : "N/A";
+        String est = (estado != null) ? estado : "N/A";
+
+        String origen = "N/A";
+        if (cuentaOrigen != null) {
+            try {
+                origen = cuentaOrigen.getNumCuenta() != null ? cuentaOrigen.getNumCuenta() : "N/A";
+            } catch (Exception e) {
+                origen = cuentaOrigen.toString();
+            }
+        }
+
+        String destino = "N/A";
+        if (cuentaDestino != null) {
+            try {
+                destino = cuentaDestino.getNumCuenta() != null ? cuentaDestino.getNumCuenta() : "N/A";
+            } catch (Exception e) {
+                destino = cuentaDestino.toString();
+            }
+        }
+
+        String acceso = (idAcceso != null) ? idAcceso.toString() : "N/A";
+
+        return "Transaccion{id=" + id +
+               ", fecha=" + f +
+               ", monto=" + m +
+               ", tipo=" + tipo +
+               ", estado=" + est +
+               ", origen=" + origen +
+               ", destino=" + destino +
+               ", acceso=" + acceso + "}";
+    }
     
 }
