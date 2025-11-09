@@ -1,6 +1,8 @@
 
 package com.mycompany.jusadipay;
 import java.time.LocalDateTime;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 public class withdrawalcode {
     private int codigo;
@@ -70,5 +72,34 @@ public class withdrawalcode {
         this.puntoretiro = puntoretiro;
     }
     
-    
+    private static final int EXP_MINUTOS = 30;
+    private static final Random RND = new Random();
+
+    public String generarCodigo() {
+        int nuevo = 100000 + RND.nextInt(900000);
+        this.codigo = nuevo;
+        this.fechageneracion = LocalDateTime.now();
+        this.fechaexpiracion = this.fechageneracion.plusMinutes(EXP_MINUTOS);
+        this.estado = "PENDIENTE";
+        return String.valueOf(nuevo);
+    }
+
+    public boolean validarCodigo(String codigo) {
+        if (codigo == null) return false;
+        if (!String.valueOf(this.codigo).equals(codigo)) return false;
+        if (!"PENDIENTE".equalsIgnoreCase(this.estado)) return false;
+        if (verificarExpiracion()) return false;
+        return true;
+    }
+
+    public boolean verificarExpiracion() {
+        if (this.fechaexpiracion == null) return true;
+        boolean expiro = LocalDateTime.now().isAfter(this.fechaexpiracion);
+        if (expiro) this.estado = "EXPIRADO";
+        return expiro;
+    }
+
+    public void cancelarCodigo() {
+        this.estado = "CANCELADO";
+    }
 }
