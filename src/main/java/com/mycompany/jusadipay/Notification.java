@@ -81,4 +81,39 @@ public class Notification {
     public void setCodigoRetiroAsociado(withdrawalcode codigoRetiroAsociado) {
         this.codigoRetiroAsociado = codigoRetiroAsociado;
     }
+    
+    // Envía la notificación (valida y sella tiempos/ID)
+public boolean enviar() {
+    if (usuarioDestino == null) return false;
+    if (contenido == null || contenido.isBlank()) return false;
+
+    if (this.idNotificacion == null || this.idNotificacion.isBlank()) {
+        this.idNotificacion = "NTF-" + System.nanoTime();
+    }
+    LocalDateTime ahora = LocalDateTime.now();
+    this.fechaEnvio = ahora;
+    this.horaEnvio = ahora; // si manejas fecha y hora por separado, puedes diferenciarlas
+
+    return true;
+}
+
+// Construye y envía una notificación específica para Código de Retiro
+public void notificarCodigoRetiro(withdrawalcode codigo) {
+    if (codigo == null) return;
+
+    this.codigoRetiroAsociado = codigo;
+    this.usuarioDestino = codigo.getCuentaAsociante();
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("Código de retiro generado: ").append(codigo.getCodigo()).append('\n')
+      .append("Estado: ").append(codigo.getEstado()).append('\n')
+      .append("Punto de retiro: ").append(
+            codigo.getPuntoretiro() != null ? codigo.getPuntoretiro() : "N/A").append('\n')
+      .append("Vence: ").append(
+            codigo.getFechaexpiracion() != null ? codigo.getFechaexpiracion() : "N/A");
+    this.contenido = sb.toString();
+
+    this.enviar();
+}
+
 }
