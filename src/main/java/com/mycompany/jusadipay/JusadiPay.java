@@ -4,9 +4,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+import com.mycompany.jusadipay.polimorfismo.Deposito;
+import com.mycompany.jusadipay.polimorfismo.OperacionCuenta;
+import com.mycompany.jusadipay.polimorfismo.Retiro;
+import java.util.Arrays;
+
 public class JusadiPay {
 
     public static void main(String[] args) {
+        
+        
         System.out.println("**INICIALIZANDO BILLETERA VIRTUAL**");
         
         //1. crear servicios
@@ -51,6 +58,16 @@ public class JusadiPay {
         //4. crea cuenta
         Account cuenta1 = new Account("ACC-001", sara, 999000.00);
         Account cuenta2 = new Account("ACC-002", diana, 900000.00);
+        
+        List<OperacionCuenta> ops = Arrays.asList(
+            new Deposito(150_000.0),
+            new Retiro(50_000.0)
+            );
+
+            for (OperacionCuenta op : ops) {
+            Transaction t = op.ejecutar(cuenta1); // ojo: cuenta1, no 'cuental'
+            System.out.println(t != null ? "[OK] " + t.obtenerDetaller() : "[FAIL] Operación");
+        }
 
         //5. Crear bolsillos
         pocket bolsillo1 = new pocket ("Universidad", 3000000.00, 0.0, 0.0, "activo", cuenta1,LocalDateTime.now());
