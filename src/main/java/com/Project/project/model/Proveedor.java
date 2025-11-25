@@ -56,8 +56,8 @@ public class Proveedor {
         if (this.nombreproveedor == null || this.nombreproveedor.isBlank()) return false;
 
         for (Proveedor p : REGISTRO) {
-            if (p.nombreProveedor != null &&
-                    p.nombreProveedor.equalsIgnoreCase(this.nombreProveedor)) {
+            if (p.nombreproveedor != null &&
+                    p.nombreproveedor.equalsIgnoreCase(this.nombreproveedor)) {
                 return false; // Ya existe
             }
         }
@@ -72,8 +72,8 @@ public class Proveedor {
     public void eliminarProveedor() {
         REGISTRO.removeIf(p ->
                 p == this ||
-                        (p.nombreProveedor != null &&
-                                p.nombreProveedor.equalsIgnoreCase(this.nombreProveedor))
+                        (p.nombreproveedor != null &&
+                                p.nombreproveedor.equalsIgnoreCase(this.nombreproveedor))
         );
     }
 
