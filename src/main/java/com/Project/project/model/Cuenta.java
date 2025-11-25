@@ -2,7 +2,7 @@ package com.Project.project.model;
 
 import java.time.LocalDateTime;
 import java.util.*;
-//comentario de prueba
+
 public class Cuenta {
 
     private String NumCuenta;
