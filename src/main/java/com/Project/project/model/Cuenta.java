@@ -1,14 +1,21 @@
 package com.Project.project.model;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Cuenta {
 
     private String NumCuenta;
     private Usuario Titular;
     private Double Saldo;
+
+    private List<Transaccion> movimientos = new ArrayList<>();
+    private List<CodigoDeRetiro> codigosRetiro = new ArrayList<>();
+    private Map<String, Double> montoPorCodigo = new HashMap<>();
+    private List<Bolsillo> bolsillos = new ArrayList<>();
+
+    // Random que usas en solicitarRetiroCodigo()
+    private Random rnd = new Random();
 
     public Cuenta() {
     }
@@ -51,15 +58,15 @@ public class Cuenta {
         this.Saldo += monto;
 
         Transaccion tx = new Transaccion(
-                "TX-" + System.nanoTime(),
-                LocalDateTime.now(),
-                monto,
-                "DEPOSITO",
-                "COMPLETADA",
-                null,
-                this,
-                null
+                (int)(System.nanoTime() % Integer.MAX_VALUE),   // idTransaccion
+                LocalDateTime.now(),                            // fecha
+                monto,                                          // monto
+                "COMPLETADA",                                   // estado
+                this,                                           // cuentaOrigen
+                null,                                           // cuentaDestino
+                null                                            // puntoRetiro
         );
+
         movimientos.add(tx);
         return true;
     }
@@ -71,14 +78,13 @@ public class Cuenta {
         this.Saldo -= monto;
 
         Transaccion tx = new Transaccion(
-                "TX-" + System.nanoTime(),
-                LocalDateTime.now(),
-                monto,
-                "RETIRO",
-                "COMPLETADA",
-                this,              // cuentaOrigen
-                null,              // cuentaDestino
-                null               // idAcceso
+                (int)(System.nanoTime() % Integer.MAX_VALUE), // idTransaccion
+                LocalDateTime.now(),                          // fecha
+                monto,                                        // monto
+                "RETIRO",                                     // estado
+                this,                                         // cuentaOrigen
+                null,                                         // cuentaDestino
+                null                                          // puntoRetiro
         );
         movimientos.add(tx);
         return true;
@@ -86,14 +92,16 @@ public class Cuenta {
 
     public Double consultarSaldo() {
         return Saldo;
-    }
+        }
 
     public List<Transaccion> obtenerMovimientos() {
+
         return Collections.unmodifiableList(movimientos);
     }
 
     public List<Bolsillo> obtenerBolsillos() {
-        return Collections.unmodifiableList(Bolsillo);
+
+        return Collections.unmodifiableList(bolsillos);
     }
 
     public CodigoDeRetiro solicitarRetiroCodigo(double monto, String puntoRetiro) {
@@ -108,27 +116,25 @@ public class Cuenta {
         LocalDateTime expira = ahora.plusMinutes(30);
 
         CodigoDeRetiro wc = new CodigoDeRetiro(
-                codigo,
+                String.valueOf(codigo),  // tu constructor espera String, no int
                 ahora,
                 expira,
                 "PENDIENTE",
-                this.Titular,
-                puntoRetiro
+                this.Titular
         );
 
         codigosRetiro.add(wc);
-        montoPorCodigo.put(codigo, monto);
+        montoPorCodigo.put(wc.getCodigo(), monto);
 
         // Registrar transacción pendiente
         Transaccion tx = new Transaccion(
-                "TX-" + System.nanoTime(),
-                ahora,
-                monto,
-                "RETIRO_CODIGO",
-                "PENDIENTE",
-                this,
-                null,
-                null
+                (int)(System.nanoTime() % Integer.MAX_VALUE), // idTransaccion
+                ahora,                                        // fecha
+                monto,                                        // monto
+                "PENDIENTE",                                  // estado
+                this,                                         // cuentaOrigen
+                null,                                         // cuentaDestino
+                puntoRetiro
         );
         movimientos.add(tx);
 
@@ -146,8 +152,9 @@ public class Cuenta {
         }
 
         CodigoDeRetiro match = null;
-        for (CodigoDeRetiro wc : codigo) {
-            if (wc.getCodigo() == codigo) {
+
+        for (CodigoDeRetiro wc : codigosRetiro) {
+            if (wc.getCodigo().equals(codigoStr)) {   // código ingresado por el usuario
                 match = wc;
                 break;
             }
@@ -174,13 +181,12 @@ public class Cuenta {
 
         // Registrar transacción completada
         Transaccion tx = new Transaccion(
-                "TX-" + System.nanoTime(),
-                ahora,
-                monto,
-                "RETIRO_CODIGO",
-                "COMPLETADA",
-                this,
-                null,
+                (int)(System.nanoTime() % Integer.MAX_VALUE), // idTransaccion
+                ahora,                                        // fecha
+                monto,                                        // monto
+                "COMPLETADA",                                 // estado
+                this,                                         // cuentaOrigen
+                null,                                         // cuentaDestino
                 null
         );
         movimientos.add(tx);
