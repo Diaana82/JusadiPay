@@ -7,9 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ProjectApplication {
 
-    private String numCuenta;
-    private Usuario titular;
-    private double saldo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
