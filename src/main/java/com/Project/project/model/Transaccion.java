@@ -3,10 +3,10 @@ package com.Project.project.model;
 import java.time.LocalDateTime;
 
 public class Transaccion {
+
     private int idTransaccion;
     private LocalDateTime fecha;
     private Double monto;
-    private TipoTransaccion tipoTransaccion;
     private String estado;
     private Cuenta cuentaOrigen;
     private Cuenta cuentaDestino;
@@ -15,11 +15,13 @@ public class Transaccion {
     public Transaccion() {
     }
 
-    public Transaccion(int idTransaccion, LocalDateTime fecha, Double monto, TipoTransaccion tipoTransaccion, String estado, Cuenta cuentaOrigen, Cuenta cuentaDestino, String puntoRetiro) {
+    public Transaccion(int idTransaccion, LocalDateTime fecha, Double monto,
+                       String estado, Cuenta cuentaOrigen,
+                       Cuenta cuentaDestino, String puntoRetiro) {
+
         this.idTransaccion = idTransaccion;
         this.fecha = fecha;
         this.monto = monto;
-        this.tipoTransaccion = tipoTransaccion;
         this.estado = estado;
         this.cuentaOrigen = cuentaOrigen;
         this.cuentaDestino = cuentaDestino;
@@ -48,14 +50,6 @@ public class Transaccion {
 
     public void setMonto(Double monto) {
         this.monto = monto;
-    }
-
-    public TipoTransaccion getTipoTransaccion() {
-        return tipoTransaccion;
-    }
-
-    public void setTipoTransaccion(TipoTransaccion tipoTransaccion) {
-        this.tipoTransaccion = tipoTransaccion;
     }
 
     public String getEstado() {
@@ -88,5 +82,20 @@ public class Transaccion {
 
     public void setPuntoRetiro(String puntoRetiro) {
         this.puntoRetiro = puntoRetiro;
+    }
+
+    // Método padre
+    public String obtenerDetalles() {
+
+        String origen = (cuentaOrigen != null) ? cuentaOrigen.getNumCuenta() : "N/A";
+        String destino = (cuentaDestino != null) ? cuentaDestino.getNumCuenta() : "N/A";
+
+        return "Transacción ID: " + idTransaccion +
+                "\nFecha: " + fecha +
+                "\nMonto: $" + monto +
+                "\nEstado: " + estado +
+                "\nCuenta Origen: " + origen +
+                "\nCuenta Destino: " + destino +
+                "\nPunto de Retiro: " + (puntoRetiro != null ? puntoRetiro : "N/A");
     }
 }

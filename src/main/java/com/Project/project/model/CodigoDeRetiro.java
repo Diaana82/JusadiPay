@@ -20,6 +20,26 @@ public class CodigoDeRetiro {
         this.usuarioAsociante = usuarioAsociante;
     }
 
+    public boolean validarCodigo(String codigoIngresado) {
+        if (!verificarExpiracion() && this.estado.equals("ACTIVO")) {
+            return this.codigo.equals(codigoIngresado);
+        }
+        return false;
+    }
+
+    public boolean verificarExpiracion() {
+        if (LocalDateTime.now().isAfter(fechaExpiracion)) {
+            this.estado = "EXPIRADO";
+            return true;
+        }
+        return false;
+    }
+
+    public void cancelarCodigo() {
+        this.estado = "CANCELADO";
+    }
+
+
     public String getCodigo() {
         return codigo;
     }

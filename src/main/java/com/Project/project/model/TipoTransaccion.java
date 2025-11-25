@@ -1,14 +1,28 @@
 package com.Project.project.model;
 
+import java.time.LocalDateTime;
 
-public class TipoTransaccion {
+public class TipoTransaccion extends Transaccion {
+
     private int idTipoTransaccion;
     private String nombreTipoTransaccion;
 
     public TipoTransaccion() {
+        super();
     }
 
-    public TipoTransaccion(int idTipoTransaccion, String nombreTipoTransaccion) {
+    public TipoTransaccion(
+            int idTransaccion,
+            LocalDateTime fecha,
+            Double monto,
+            String estado,
+            Cuenta cuentaOrigen,
+            Cuenta cuentaDestino,
+            String puntoRetiro,
+            int idTipoTransaccion,
+            String nombreTipoTransaccion
+    ) {
+        super(idTransaccion, fecha, monto, estado, cuentaOrigen, cuentaDestino, puntoRetiro);
         this.idTipoTransaccion = idTipoTransaccion;
         this.nombreTipoTransaccion = nombreTipoTransaccion;
     }
@@ -27,5 +41,14 @@ public class TipoTransaccion {
 
     public void setNombreTipoTransaccion(String nombreTipoTransaccion) {
         this.nombreTipoTransaccion = nombreTipoTransaccion;
+    }
+
+    // Sobrescribir el método del padre
+    @Override
+    public String obtenerDetalles() {
+
+        return super.obtenerDetalles() +
+                "\nTipo de Transacción: " + nombreTipoTransaccion +
+                "\nID Tipo: " + idTipoTransaccion;
     }
 }
