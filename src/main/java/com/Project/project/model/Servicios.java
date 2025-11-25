@@ -153,7 +153,7 @@ public class Servicios {
     }
 
     public String generarComprobante() {
-        String provNombre = (proveedor != null) ? proveedor.getNombreProveedor() : "N/A";
+        String provNombre = (proveedor != null) ? proveedor.getNombreproveedor(): "N/A";
         return new StringBuilder()
                 .append("=== COMPROBANTE SERVICIO ===\n")
                 .append("Proveedor: ").append(provNombre).append('\n')

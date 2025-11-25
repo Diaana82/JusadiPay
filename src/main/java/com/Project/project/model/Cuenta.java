@@ -146,7 +146,7 @@ public class Cuenta {
         }
 
         CodigoDeRetiro match = null;
-        for (CodigoDeRetiro wc : codigosRetiro) {
+        for (CodigoDeRetiro wc : codigo) {
             if (wc.getCodigo() == codigo) {
                 match = wc;
                 break;
