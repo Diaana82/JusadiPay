@@ -79,4 +79,23 @@ public class Notificacion {
     public void setCodigoRetiroAsociado(CodigoDeRetiro codigoRetiroAsociado) {
         this.codigoRetiroAsociado = codigoRetiroAsociado;
     }
+
+    public boolean enviar() {
+        if (usuarioDestino == null || contenido == null || contenido.isEmpty()) {
+            return false;
+        }
+
+        this.fechaEnvio = LocalDateTime.now();
+
+        System.out.println("Notificación enviada a: " + usuarioDestino.getNombre());
+        System.out.println("Contenido: " + contenido);
+
+        return true;
+    }
+    public void notificarCodigoRetiro(CodigoDeRetiro codigo) {
+        this.codigoRetiroAsociado = codigo;
+
+        this.tipoNotificacion = "Código de retiro";
+        this.contenido = "Tu código de retiro es: " + codigo.getCodigo();
+    }
 }
