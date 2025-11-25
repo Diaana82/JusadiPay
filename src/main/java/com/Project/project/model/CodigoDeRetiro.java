@@ -1,6 +1,7 @@
 package com.Project.project.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class CodigoDeRetiro {
     private String codigo;
@@ -20,15 +21,28 @@ public class CodigoDeRetiro {
         this.usuarioAsociante = usuarioAsociante;
     }
 
-    public boolean validarCodigo(String codigoIngresado) {
-        if (!verificarExpiracion() && this.estado.equals("ACTIVO")) {
-            return this.codigo.equals(codigoIngresado);
+    public String generarCodigo() {
+        // Genera un código único de 6 caracteres (por ejemplo para retiro)
+        this.codigo = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+        this.fechaGeneracion = LocalDateTime.now();
+        this.fechaExpiracion = fechaGeneracion.plusMinutes(10); // expira en 10 minutos
+        this.estado = "ACTIVO";
+
+        return this.codigo;
+    }
+
+    public boolean validarCodigo(String codigoIngresado){
+        if (verificarExpiracion()){
+            return false;
         }
-        return false;
+        if (!"ACTIVO".equals(this.estado)) {
+            return false;
+        }
+        return this.codigo.equals(codigoIngresado);
     }
 
     public boolean verificarExpiracion() {
-        if (LocalDateTime.now().isAfter(fechaExpiracion)) {
+        if (LocalDateTime.now().isAfter(this.fechaExpiracion)) {
             this.estado = "EXPIRADO";
             return true;
         }
@@ -38,7 +52,6 @@ public class CodigoDeRetiro {
     public void cancelarCodigo() {
         this.estado = "CANCELADO";
     }
-
 
     public String getCodigo() {
         return codigo;
