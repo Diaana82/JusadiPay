@@ -109,13 +109,12 @@ public class Servicios {
         this.estado = "COMPLETADO";
 
         this.transaccion = new Transaccion(
-                "TX-" + System.nanoTime(),
-                this.fechaPago,
-                monto,
-                this.tipoServicio,
-                this.estado,
-                this.cuentaOrigen,
-                null,
+                (int)(System.nanoTime() % Integer.MAX_VALUE), // idTransaccion
+                this.fechaPago,                                // fecha
+                monto,                                         // monto
+                "RECARGA_CELULAR",                             // estado
+                this.cuentaOrigen,                             // cuentaOrigen
+                null,                                          // cuentaDestino
                 null
         );
         return true;
@@ -140,14 +139,13 @@ public class Servicios {
         this.estado = "COMPLETADA";
 
         this.transaccion = new Transaccion(
-                "TX-" + System.nanoTime(),
-                this.fechaPago,
-                monto,
-                this.tipoServicio,
-                this.estado,
-                this.cuentaOrigen,
-                null,
-                null
+                (int)(System.nanoTime() % Integer.MAX_VALUE),  // idTransaccion
+                this.fechaPago,                                // fecha
+                monto,                                         // monto
+                "PAGO_FACTURA",                                // estado
+                this.cuentaOrigen,                             // cuentaOrigen
+                null,                                          // cuentaDestino
+                null                                           // puntoRetiro
         );
         return true;
     }

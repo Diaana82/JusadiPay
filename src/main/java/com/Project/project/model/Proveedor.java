@@ -11,6 +11,7 @@ public class Proveedor {
     private String tipoServicio;
     private LocalDateTime fechaRegistro;
 
+    private static final List<Proveedor> REGISTRO = new ArrayList<>();
     private final List<Servicios> servicios = new ArrayList<>();
 
     public Proveedor() {
