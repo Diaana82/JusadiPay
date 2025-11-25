@@ -10,12 +10,12 @@ public class Servicios {
     private LocalDateTime fechaPago;
     private String estado;
     private Cuenta cuentaOrigen;
-    private Transaction transaccion;
+    private Transaccion transaccion;
 
     public Servicios() {
     }
 
-    public Servicios(Cuenta cuentaOrigen, String estado, LocalDateTime fechaPago, double monto, String numReferencia, Proveedor proveedor, String tipoServicio, Transaction transaccion) {
+    public Servicios(Cuenta cuentaOrigen, String estado, LocalDateTime fechaPago, double monto, String numReferencia, Proveedor proveedor, String tipoServicio, Transaccion transaccion) {
         this.cuentaOrigen = cuentaOrigen;
         this.estado = estado;
         this.fechaPago = fechaPago;
@@ -82,11 +82,11 @@ public class Servicios {
         this.tipoServicio = tipoServicio;
     }
 
-    public Transaction getTransaccion() {
+    public Transaccion getTransaccion() {
         return transaccion;
     }
 
-    public void setTransaccion(Transaction transaccion) {
+    public void setTransaccion(Transaccion transaccion) {
         this.transaccion = transaccion;
     }
 
@@ -101,15 +101,26 @@ public class Servicios {
         cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - monto);
 
         // Se registran datos del servicio
-        this.proveedor = new Proveedor("Operador Móvil"); // ejemplo
+        this.proveedor = null;
         this.monto = monto;
         this.numReferencia = numero;
         this.tipoServicio = "RECARGA_CELULAR";
         this.fechaPago = LocalDateTime.now();
         this.estado = "COMPLETADO";
 
+        this.transaccion = new Transaccion(
+                "TX-" + System.nanoTime(),
+                this.fechaPago,
+                monto,
+                this.tipoServicio,
+                this.estado,
+                this.cuentaOrigen,
+                null,
+                null
+        );
         return true;
     }
+
     public boolean pagarFactura(Proveedor prov, String referencias, double monto) {
         if (cuentaOrigen == null) return false;
         if (prov == null) return false;
@@ -128,7 +139,7 @@ public class Servicios {
         this.fechaPago = LocalDateTime.now();
         this.estado = "COMPLETADA";
 
-        this.transaccion = new Transaction(
+        this.transaccion = new Transaccion(
                 "TX-" + System.nanoTime(),
                 this.fechaPago,
                 monto,
