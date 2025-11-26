@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class RestAccesoUsuarioController {
+public class RestUsuarioController {
 
     private static final List<Cuenta> Cuenta = new ArrayList<>();
 
