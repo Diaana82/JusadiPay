@@ -36,6 +36,15 @@ public class RestUsuarioController {
         return "Esta es la página de Acceso Usuarios";
     }
 
+    @GetMapping("/AccesosUsuario")
+    public List<String> obtenerSoloIds() {
+        List<String> ids = new ArrayList<>();
+        for (Cuenta c : cuentas) {
+            ids.add(c.getNumCuenta());
+        }
+        return ids;
+    }
+
 
     @DeleteMapping("AccesoUsuarios/{id}")
     public ResponseEntity<String> eliminarCuenta(@PathVariable String id) {
