@@ -1,19 +1,24 @@
 package com.Project.project;
 
 import com.Project.project.model.*;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Arrays;
 
 @SpringBootApplication
 public class projectApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(projectApplication.class, args);
+    }
 
-    System.out.println("**INICIALIZANDO BILLETERA VIRTUAL**");
+    @Override
+    public void run(String... args) throws Exception {
+
+        System.out.println("**INICIALIZANDO BILLETERA VIRTUAL**");
 
     //1. crear servicios
     Servicios servicio1 = new Servicios();
@@ -34,7 +39,7 @@ public class projectApplication {
         System.out.println("Error registro/sesión: " + ex.getMessage());
     }
 
-    //3. accesos de usuario
+    //3. Registrar accesos
 
     AccesoUsuario accSara = new AccesoUsuario("Sara", "127.0.0.1", LocalDateTime.now(), "Android");
         accSara.registrarAccesos();
@@ -58,14 +63,17 @@ public class projectApplication {
     Cuenta cuenta1 = new Cuenta("ACC-001", sara, 999000.00);
     Cuenta cuenta2 = new Cuenta("ACC-002", diana, 900000.00);
 
+    //5.operaciones de cuenta
     List<OperacionCuenta> ops = Arrays.asList(
             new Deposito(150_000.0),
             new Retiro(50_000.0)
     );
 
-            for (OperacionCuenta op : ops) {
-        Transaccion t = op.ejecute(cuenta1); // ojo: cuenta1, no 'cuental'
-        System.out.println(t != null ? "[OK] " + t.obtenerDetalles() : "[FAIL] Operación");
+    for (OperacionCuenta op : ops) {
+        Transaccion tx = op.ejecute(cuenta1); // ojo: cuenta1, no 'cuental'
+        if (tx != null) {
+            System.out.println("Operación realizada: " + tx.getTipo() + " - Monto: " + tx.getMonto());
+        }
     }
 
     //5. Crear bolsillos
@@ -144,8 +152,6 @@ public class projectApplication {
 }
 
 
-	public static void main(String[] args) {
-		SpringApplication.run(projectApplication.class, args);
-	}
+
 
 }

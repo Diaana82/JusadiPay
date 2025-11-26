@@ -9,14 +9,14 @@ import java.util.List;
 public class AccesoUsuario {
 
     private Usuario usuario;
-    private int ip;
+    private String ip;
     private LocalDateTime fechahora;
     private String dispositivo;
 
     public AccesoUsuario() {
     }
 
-    public AccesoUsuario(Usuario usuario, int ip, LocalDateTime fechahora, String dispositivo) {
+    public AccesoUsuario(Usuario usuario, String ip, LocalDateTime fechahora, String dispositivo) {
         this.usuario = usuario;
         this.ip = ip;
         this.fechahora = fechahora;
@@ -31,11 +31,11 @@ public class AccesoUsuario {
         this.usuario = usuario;
     }
 
-    public int getIp() {
+    public String getIp() {
         return ip;
     }
 
-    public void setIp(int ip) {
+    public void setIp(String ip) {
         this.ip = ip;
     }
 
@@ -63,19 +63,21 @@ public class AccesoUsuario {
         }
 
 
-        ACCESOS.add(new AccesoUsuario(this.usuario, this.ip, this.fechahora, this.dispositivo));
+        ACCESOS.add(this);
     }
 
-    public List<AccesoUsuario> mostrarAccesos() {
+    public static List<AccesoUsuario> mostrarAccesos() {
+
         return Collections.unmodifiableList(ACCESOS);
     }
 
-    public List<AccesoUsuario> FiltrarPorUsuario(Usuario usuario) {
+    public static List<AccesoUsuario> FiltrarPorUsuario(Usuario usuario) {
         if (usuario == null) return List.of();
+
         List<AccesoUsuario> out = new ArrayList<>();
         for (AccesoUsuario a : ACCESOS) {
-            if (a.getUsuario().getNombre().equalsIgnoreCase(usuario.getNombre())
-            ) {
+            if (a.usuario != null &&
+                    a.usuario.getNombre().equalsIgnoreCase(usuario.getNombre())) {
                 out.add(a);
             }
         }
