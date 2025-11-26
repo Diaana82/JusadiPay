@@ -6,7 +6,7 @@ public class Usuario {
     private String documento;
     private String telefono;
     private String correo;
-    private String contraseña;
+    private String contrasena;
     private int edad;
 
     public Usuario() {
@@ -17,7 +17,7 @@ public class Usuario {
         this.documento = documento;
         this.telefono = telefono;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
         this.edad = edad;
     }
 
@@ -53,12 +53,12 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
     public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
     }
 
     public int getEdad() {
@@ -81,7 +81,7 @@ public class Usuario {
         if (this.nombre == null || this.nombre.isBlank()) throw new IllegalStateException("Nombre requerido");
         if (this.documento == null || this.documento.isBlank()) throw new IllegalStateException("Documento requerido");
         if (this.correo == null || this.correo.isBlank()) throw new IllegalStateException("Correo requerido");
-        if (this.contraseña == null || this.contraseña.isBlank()) throw new IllegalStateException("Contraseña requerida");
+        if (this.contrasena == null || this.contrasena.isBlank()) throw new IllegalStateException("Contraseña requerida");
         if (this.edad < 18) throw new IllegalStateException("Debe ser mayor de edad");
 
         // Unicidad de correo

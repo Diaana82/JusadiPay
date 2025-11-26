@@ -59,8 +59,8 @@ public class ProjectApplication implements CommandLineRunner {
     }
 
     //4. crea cuenta
-    Cuenta cuenta1 = new Cuenta("ACC-001", sara, 999000.00);
-    Cuenta cuenta2 = new Cuenta("ACC-002", diana, 900000.00);
+    Cuenta cuenta1 = new Cuenta("5", sara, 999000.00);
+    Cuenta cuenta2 = new Cuenta("4", diana, 900000.00);
 
 
     //5. Crear bolsillos

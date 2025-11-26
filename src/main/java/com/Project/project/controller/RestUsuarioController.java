@@ -1,9 +1,11 @@
 package com.Project.project.controller;
 
+import com.Project.project.model.AccesoUsuario;
 import com.Project.project.model.Cuenta;
+import com.Project.project.model.CuentaRequest;
 import com.Project.project.model.Usuario;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
 @RestController
 public class RestUsuarioController {
 
-    private static final List<Cuenta> Cuenta = new ArrayList<>();
+    private static final List<Cuenta> cuentas = new ArrayList<>();
 
     static {
 
@@ -24,22 +26,78 @@ public class RestUsuarioController {
         Usuario u3 = new Usuario("David Jaramillo", "1063420560", "3113755163", "david.jara@gmail.com", "dav123", 29);
         Cuenta c3 = new Cuenta("3", u3, 200000.0);
 
-        Cuenta.add(c1);
-        Cuenta.add(c2);
-        Cuenta.add(c3);
+        cuentas.add(c1);
+        cuentas.add(c2);
+        cuentas.add(c3);
     }
 
     @GetMapping("/")
-    public String Inicio(){
+    public String Inicio() {
         return "Esta es la página de Acceso Usuarios";
     }
+
+
     @GetMapping("/AccesosUsuario")
     public List<String> obtenerSoloIds() {
         List<String> ids = new ArrayList<>();
-        for (Cuenta c : Cuenta) {
-            ids.add(c.getNumCuenta()); // o getId() si tu campo se llama distinto
+        for (Cuenta c : cuentas) {
+            ids.add(c.getNumCuenta());
         }
         return ids;
     }
 
-}
+    @GetMapping("/AccesosUsuarios/{id}")
+    public Cuenta CuentaId(@PathVariable String id) {
+
+        for (Cuenta c : cuentas) {
+            if (c.getNumCuenta().equals(id)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    @DeleteMapping("AccesoUsuarios/{id}")
+    public ResponseEntity<String> eliminarCuenta(@PathVariable String id) {
+
+        for (Cuenta c : cuentas) {
+            if (c.getNumCuenta().equals(id)) {
+                cuentas.remove(c);
+                return ResponseEntity.ok("Cuenta eliminada correctamente");
+            }
+        }
+
+        return ResponseEntity.status(404).body("Cuenta no encontrada");
+
+    }
+    @PostMapping("/CrearCuenta")
+    public ResponseEntity<String> addCuenta(@RequestBody CuentaRequest request) {
+        try {
+            if (request == null || request.getTitular() == null || request.getSaldo() == null) {
+                return ResponseEntity.badRequest()
+                        .body("Faltan datos: titular o saldo");
+            }
+
+            Long id = cuentas.stream()
+                    .map(Cuenta::getNumCuenta)
+                    .filter(num -> num != null && num.matches("\\d+"))
+                    .mapToLong(Long::parseLong)
+                    .max()
+                    .orElse(0L) + 1;
+
+            Cuenta nuevaCuenta = new Cuenta();
+            nuevaCuenta.setNumCuenta(String.valueOf(id));
+            nuevaCuenta.setTitular(request.getTitular());
+            nuevaCuenta.setSaldo(request.getSaldo());
+
+            cuentas.add(nuevaCuenta);
+
+            return ResponseEntity.ok("La cuenta fue creada correctamente, ID " + id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .body("Error interno: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        }
+    }
+    }
+
