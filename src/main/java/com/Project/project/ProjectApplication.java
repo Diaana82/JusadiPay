@@ -15,7 +15,6 @@ public class projectApplication {
         SpringApplication.run(projectApplication.class, args);
     }
 
-    @Override
     public void run(String... args) throws Exception {
 
         System.out.println("**INICIALIZANDO BILLETERA VIRTUAL**");
