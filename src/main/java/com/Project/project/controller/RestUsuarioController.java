@@ -99,5 +99,21 @@ public class RestUsuarioController {
                     .body("Error interno: " + e.getClass().getSimpleName() + " - " + e.getMessage());
         }
     }
+
+    @PutMapping("/ActualizarUsuario/{id}")
+    public
+    ResponseEntity<String> actualizarUsuario(@PathVariable String id, @RequestBody Usuario usuario) {
+        for (Cuenta c : cuentas) {
+            if (c.getNumCuenta().equals(id)) {
+                c.getTitular().setNombre(usuario.getNombre());
+                c.getTitular().setDocumento(usuario.getDocumento());
+                c.getTitular().setTelefono(usuario.getTelefono());
+                c.getTitular().setCorreo(usuario.getCorreo());
+                return ResponseEntity.ok("Usuario actualizado correctamente");
+            }
+        }
+        return ResponseEntity.status(404).body("Usuario no encontrado");
+
+    }
     }
 
