@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Arrays;
 
 @SpringBootApplication
-public class projectApplication {
+public class ProjectApplication implements CommandLineRunner {
+
     public static void main(String[] args) {
-        SpringApplication.run(projectApplication.class, args);
+        SpringApplication.run(ProjectApplication.class, args);
     }
-
+    @Override
     public void run(String... args) throws Exception {
-
         System.out.println("**INICIALIZANDO BILLETERA VIRTUAL**");
 
     //1. crear servicios
@@ -40,10 +40,10 @@ public class projectApplication {
 
     //3. Registrar accesos
 
-    AccesoUsuario accSara = new AccesoUsuario("Sara", "127.0.0.1", LocalDateTime.now(), "Android");
+    AccesoUsuario accSara = new AccesoUsuario(sara, "127.0.0.1", LocalDateTime.now(), "Android");
         accSara.registrarAccesos();
 
-    AccesoUsuario accDiana = new AccesoUsuario("Diana", "192.168.1.50", LocalDateTime.now(), "iOS");
+    AccesoUsuario accDiana = new AccesoUsuario(diana, "192.168.1.50", LocalDateTime.now(), "iOS");
         accDiana.registrarAccesos();
 
     // Mostrar todos los accesos
@@ -62,26 +62,14 @@ public class projectApplication {
     Cuenta cuenta1 = new Cuenta("ACC-001", sara, 999000.00);
     Cuenta cuenta2 = new Cuenta("ACC-002", diana, 900000.00);
 
-    //5.operaciones de cuenta
-    List<OperacionCuenta> ops = Arrays.asList(
-            new Deposito(150_000.0),
-            new Retiro(50_000.0)
-    );
-
-    for (OperacionCuenta op : ops) {
-        Transaccion tx = op.ejecute(cuenta1); // ojo: cuenta1, no 'cuental'
-        if (tx != null) {
-            System.out.println("Operación realizada: " + tx.getTipo() + " - Monto: " + tx.getMonto());
-        }
-    }
 
     //5. Crear bolsillos
     Bolsillo bolsillo1 = new Bolsillo("Universidad", 3000000.00, 0.0, 0.0, "activo", cuenta1,LocalDateTime.now());
     Bolsillo bolsillo2 = new Bolsillo ("Compras", 500000.00, 85000.00, 0.17, "activo", cuenta2,LocalDateTime.now());
 
     //6. Crear proveedores
-    Proveedor provLuz = new Proveedor("Chec", "Luz", LocalDateTime.now());
-    Proveedor provMovil = new Proveedor ("Tigo", "Telefonia", LocalDateTime.now());
+    Proveedor provLuz = new Proveedor(LocalDateTime.now(),"Chec", "Energia");
+    Proveedor provMovil = new Proveedor (LocalDateTime.now(), "Tigo", "Telefonia");
 
     //7. Imprimir saldo actual
         System.out.println("Saldo inicial de Sara: "+cuenta1.getSaldo());
@@ -139,7 +127,7 @@ public class projectApplication {
         //movimientos
         List<Transaccion> movsSara = cuenta1.obtenerMovimientos();
         for (Transaccion tr : movsSara) {
-            System.out.println(tr.obtenerDetalles()); // o el método de detalle que tengas
+            System.out.println(tr.obtenerDetalles()); //
         }
     }
         catch (Exception e) {
