@@ -1,4 +1,6 @@
-package com.Project.project.model;
+package com.Project.project.controller;
+
+import com.Project.project.model.Usuario;
 
 public class CuentaRequest {
 

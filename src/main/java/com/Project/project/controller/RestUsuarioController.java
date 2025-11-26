@@ -1,8 +1,6 @@
 package com.Project.project.controller;
 
-import com.Project.project.model.AccesoUsuario;
 import com.Project.project.model.Cuenta;
-import com.Project.project.model.CuentaRequest;
 import com.Project.project.model.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
