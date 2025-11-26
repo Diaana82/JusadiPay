@@ -34,8 +34,12 @@ public class RestUsuarioController {
         return "Esta es la página de Acceso Usuarios";
     }
     @GetMapping("/AccesosUsuario")
-    public List<Cuenta> ListarCuenta() {
-        return Cuenta;
+    public List<String> obtenerSoloIds() {
+        List<String> ids = new ArrayList<>();
+        for (Cuenta c : Cuenta) {
+            ids.add(c.getNumCuenta()); // o getId() si tu campo se llama distinto
+        }
+        return ids;
     }
 
 }
