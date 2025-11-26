@@ -17,7 +17,7 @@ public class ProjectApplication implements CommandLineRunner {
     }
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("**INICIALIZANDO BILLETERA VIRTUAL**");s
+        System.out.println("**INICIALIZANDO BILLETERA VIRTUAL**");
 
     //1. crear servicios
     Servicios servicio1 = new Servicios();
