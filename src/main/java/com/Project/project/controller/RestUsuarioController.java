@@ -45,6 +45,17 @@ public class RestUsuarioController {
         return ids;
     }
 
+    @GetMapping("/AccesosUsuarios/{id}")
+    public Cuenta CuentaId(@PathVariable String id) {
+
+        for (Cuenta c : cuentas) {
+            if (c.getNumCuenta().equals(id)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
 
     @DeleteMapping("AccesoUsuarios/{id}")
     public ResponseEntity<String> eliminarCuenta(@PathVariable String id) {
